@@ -75,6 +75,7 @@ class PlayPage(QWidget):
         self.timer.start(1000)
 
         self.setLayout(layout)
+        
 
     def update_timer(self):
         time_left = int(TOTAL_TIME - (time.time() - self.start_time))

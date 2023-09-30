@@ -5,6 +5,7 @@ from PyQt5.QtGui import QFont
 from play_page import PlayPage
 from story_page import StoryPage
 from config_page import ConfigPage
+from configparser import ConfigParser
 
 WIDTH = 800
 HEIGHT = 480
@@ -44,6 +45,13 @@ class MainWindow(QMainWindow):
         self.config_button.setStyleSheet("background-color: #FFCC47; color: black; border-radius: 10px;")
         self.config_button.setFont(QFont('Arial', BUTTON_FONT_SIZE))
         self.config_button.clicked.connect(self.show_config_page)
+
+        config = ConfigParser()
+        config.read('config.ini')
+        fullscreen = config.getboolean('General', 'fullscreen')
+        
+        if fullscreen:
+            self.showFullScreen()
     
     def show_play_page(self):
         self.play_page = PlayPage(self)
