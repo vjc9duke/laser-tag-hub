@@ -68,14 +68,20 @@ class PlayPage(QWidget):
         finish_button.clicked.connect(self.show_main_page)
         layout.addWidget(finish_button, alignment=Qt.AlignCenter)
 
-       # Set up timer
+        # Set up timer
         self.start_time = time.time()
         self.timer = QTimer()
         self.timer.timeout.connect(self.update_timer)
         self.timer.start(1000)
 
         self.setLayout(layout)
+
+        config = ConfigParser()
+        config.read('config.ini')
+        fullscreen = config.getboolean('General', 'fullscreen')
         
+        if fullscreen:
+            self.showFullScreen()
 
     def update_timer(self):
         time_left = int(TOTAL_TIME - (time.time() - self.start_time))

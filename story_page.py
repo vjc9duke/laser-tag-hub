@@ -13,6 +13,13 @@ class StoryPage(QWidget):
         back_button.setGeometry(50, 50, 200, 100)
         back_button.setFont(QFont('Arial', 20))
         back_button.clicked.connect(self.show_main_page)
+
+        config = ConfigParser()
+        config.read('config.ini')
+        fullscreen = config.getboolean('General', 'fullscreen')
+        
+        if fullscreen:
+            self.showFullScreen()
     
     def show_main_page(self):
         self.parent.show()
