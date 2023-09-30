@@ -3,6 +3,7 @@ from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import QFont
 import time
+from configparser import ConfigParser
 
 BUTTON_FONT_SIZE = 30
 TOTAL_TIME = 600 # 10 minutes

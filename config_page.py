@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import QWidget, QPushButton
 from PyQt5.QtGui import QFont
+from configparser import ConfigParser
 
 class ConfigPage(QWidget):
     def __init__(self, parent):
