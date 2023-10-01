@@ -7,6 +7,7 @@ from configparser import ConfigParser
 
 BUTTON_FONT_SIZE = 30
 TOTAL_TIME = 600 # 10 minutes
+PLAYER_FONT_SIZE = 20
 
 class PlayPage(QWidget):
     def __init__(self, parent):
@@ -23,51 +24,103 @@ class PlayPage(QWidget):
         team1_label = QLabel('TEAM 1', self)
         team1_label.setFont(QFont('Arial', BUTTON_FONT_SIZE))
         team1_label.setAlignment(Qt.AlignCenter)
-        team1_label.setStyleSheet("background-color: blue; color: white; border-radius: 10px;")
+        team1_label.setStyleSheet("background-color: #4356FF; color: white; border-radius: 10px;")
         top_row_layout.addWidget(team1_label)
+        team1_label.adjustSize()
         
         self.timer_label = QLabel('{:02}:{:02}'.format((TOTAL_TIME-1) // 60, (TOTAL_TIME-1) % 60), self) 
         self.timer_label.setFont(QFont('Arial', BUTTON_FONT_SIZE))
         self.timer_label.setAlignment(Qt.AlignCenter)
-        self.timer_label.setStyleSheet("background-color: yellow; color: black; border-radius: 10px;")
+        self.timer_label.setStyleSheet("background-color: #FFF969; color: black; border-radius: 10px;")
         top_row_layout.addWidget(self.timer_label)
         
         team2_label = QLabel('TEAM 2', self)
         team2_label.setFont(QFont('Arial', BUTTON_FONT_SIZE))
         team2_label.setAlignment(Qt.AlignCenter)
-        team2_label.setStyleSheet("background-color: red; color: white; border-radius: 10px;")
+        team2_label.setStyleSheet("background-color: #FF4343; color: white; border-radius: 10px;")
         top_row_layout.addWidget(team2_label)
         
         layout.addLayout(top_row_layout)
 
         # Player labels
         player_layout = QHBoxLayout()
-        player1_label = QLabel('P1 P4 P5', self)
-        player1_label.setFont(QFont('Arial', 18))
+        player1_label = QLabel('P1 P4 P5', self) # todo: replace with actual players
+        player1_label.setFont(QFont('Arial', PLAYER_FONT_SIZE))
+        player1_label.setAlignment(Qt.AlignCenter | Qt.AlignTop)
+        # player1_label.setStyleSheet("background-color: green; color: white; border-radius: 10px;")
         player_layout.addWidget(player1_label)
+
+        spacer_label = QLabel(' ', self)
+        player_layout.addWidget(spacer_label)
         
-        player2_label = QLabel('P2 P3 P6', self)
-        player2_label.setFont(QFont('Arial', 18))
+        player2_label = QLabel('P2 P3 P6', self) # todo: replace with actual players
+        player2_label.setFont(QFont('Arial', PLAYER_FONT_SIZE))
+        player2_label.setAlignment(Qt.AlignCenter | Qt.AlignTop)
         player_layout.addWidget(player2_label)
         
         layout.addLayout(player_layout)
 
-        # Green rounded text labels
-        green_labels_layout = QHBoxLayout()
-        for i in range(3):
-            green_label = QLabel('Green Label {}'.format(i+1), self)
-            green_label.setFont(QFont('Arial', 18))
-            green_label.setStyleSheet("background-color: green; color: white; border-radius: 10px;")
-            green_labels_layout.addWidget(green_label)
+        # Score labels
+        score_layout = QHBoxLayout()
+        score1_label = QLabel('00 00 00', self)
+        score1_label.setFont(QFont('Courier', PLAYER_FONT_SIZE))
+        score1_label.setAlignment(Qt.AlignCenter)
+        score1_label.setStyleSheet("background-color: #43FF78; color: black; border-radius: 10px;")
+        score_layout.addWidget(score1_label)
 
-        layout.addLayout(green_labels_layout)
+        spacer_label_2 = QLabel('POINTS', self)
+        spacer_label_2.setFont(QFont('Courier', PLAYER_FONT_SIZE))
+        spacer_label_2.setAlignment(Qt.AlignCenter)
+        spacer_label_2.setStyleSheet("background-color: #43FF78; color: black; border-radius: 10px;")
+        score_layout.addWidget(spacer_label_2)
+
+        score2_label = QLabel('00 00 00', self)
+        score2_label.setFont(QFont('Courier', PLAYER_FONT_SIZE))
+        score2_label.setAlignment(Qt.AlignCenter)
+        score2_label.setStyleSheet("background-color: #43FF78; color: black; border-radius: 10px;")
+        score_layout.addWidget(score2_label)
+
+        layout.addLayout(score_layout)
+
+        # Lives labels
+        kdr_layout = QHBoxLayout()
+        kdr1_label = QLabel('05 05 05', self)
+        kdr1_label.setFont(QFont('Courier', PLAYER_FONT_SIZE))
+        kdr1_label.setAlignment(Qt.AlignCenter)
+        kdr1_label.setStyleSheet("background-color: #43FF78; color: black; border-radius: 10px;")
+        kdr_layout.addWidget(kdr1_label)
+
+        spacer_label_3 = QLabel('LIVES', self)
+        spacer_label_3.setFont(QFont('Courier', PLAYER_FONT_SIZE))
+        spacer_label_3.setAlignment(Qt.AlignCenter)
+        spacer_label_3.setStyleSheet("background-color: #43FF78; color: black; border-radius: 10px;")
+        kdr_layout.addWidget(spacer_label_3)
+
+
+        kdr2_label = QLabel('05 05 05', self)
+        kdr2_label.setFont(QFont('Courier', PLAYER_FONT_SIZE))
+        kdr2_label.setAlignment(Qt.AlignCenter)
+        kdr2_label.setStyleSheet("background-color: #43FF78; color: black; border-radius: 10px;")
+        kdr_layout.addWidget(kdr2_label)
+
+        layout.addLayout(kdr_layout)
 
         # Finish button
+        finish_layout = QHBoxLayout()
+
+        finish_space_1 = QLabel(' ', self)
+        finish_layout.addWidget(finish_space_1)
+
         finish_button = QPushButton('Finish', self)
-        finish_button.setFont(QFont('Arial', 18))
-        finish_button.setStyleSheet("background-color: orange; color: white; border-radius: 10px;")
+        finish_button.setFont(QFont('Arial', PLAYER_FONT_SIZE*2))
+        finish_button.setStyleSheet("background-color: orange; color: black; border-radius: 10px;")
         finish_button.clicked.connect(self.show_main_page)
-        layout.addWidget(finish_button, alignment=Qt.AlignCenter)
+        finish_layout.addWidget(finish_button)
+
+        finish_space_2 = QLabel(' ', self)
+        finish_layout.addWidget(finish_space_2)
+
+        layout.addLayout(finish_layout)
 
         # Set up timer
         self.start_time = time.time()

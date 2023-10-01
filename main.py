@@ -1,6 +1,6 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QPropertyAnimation, QEasingCurve
 from PyQt5.QtGui import QFont
 from play_page import PlayPage
 from story_page import StoryPage
@@ -55,6 +55,7 @@ class MainWindow(QMainWindow):
     
     def show_play_page(self):
         self.play_page = PlayPage(self)
+        # self.animate_change_page(self.play_page)
         self.play_page.show()
         self.hide()
     
@@ -67,6 +68,35 @@ class MainWindow(QMainWindow):
         self.config_page = ConfigPage(self)
         self.config_page.show()
         self.hide()
+
+    # def animate_change_page(self, page):
+    #     page.setWindowOpacity(0.0)  # Set initial opacity to 0
+
+    #     # Set up animation for fade-in effect
+    #     fade_in_animation = QPropertyAnimation(page, b"windowOpacity")
+    #     fade_in_animation.setDuration(500)  # Set duration in milliseconds
+    #     fade_in_animation.setStartValue(0.0)
+    #     fade_in_animation.setEndValue(1.0)
+    #     fade_in_animation.setEasingCurve(QEasingCurve.InOutQuad)
+
+    #     # Set up animation for fade-out effect for the main window
+    #     fade_out_animation = QPropertyAnimation(self, b"windowOpacity")
+    #     fade_out_animation.setDuration(500)  # Set duration in milliseconds
+    #     fade_out_animation.setStartValue(1.0)
+    #     fade_out_animation.setEndValue(0.0)
+    #     fade_out_animation.setEasingCurve(QEasingCurve.InOutQuad)
+
+    #     # Hide the main window after fade-out animation
+    #     fade_out_animation.finished.connect(self.hide)
+
+    #     # Start animations
+    #     fade_in_animation.start()
+    #     fade_out_animation.start()
+
+    #     # Show the play page widget after fade-in animation
+    #     self.hide()
+    #     page.show()
+    #     fade_in_animation.finished.connect(page.show)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
