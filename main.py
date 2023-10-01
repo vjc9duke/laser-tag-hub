@@ -6,14 +6,7 @@ from play_page import PlayPage
 from story_page import StoryPage
 from config_page import ConfigPage
 from configparser import ConfigParser
-
-WIDTH = 800
-HEIGHT = 480
-BUTTON_WIDTH = 200
-BUTTON_HEIGHT = 75
-BUTTON_FONT_SIZE = 30
-INSET = 20
-ATI = 10  # additional title inset
+from constants import *
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -39,6 +32,12 @@ class MainWindow(QMainWindow):
         self.story_button.setStyleSheet("background-color: #43DDFF; color: black; border-radius: 10px;")
         self.story_button.setFont(QFont('Arial', BUTTON_FONT_SIZE))
         self.story_button.clicked.connect(self.show_story_page)
+
+        self.current_play = QLabel(f'Playing {self.get_current_game()}', self)
+        self.current_play.setAlignment(Qt.AlignCenter)
+        self.current_play.setFont(QFont('Arial', int(BUTTON_FONT_SIZE * 0.8)))
+        self.current_play.setStyleSheet("background-color: #43DDFF; color: black; border-radius: 10px;")
+        self.current_play.setGeometry(int(WIDTH/2 -  BUTTON_WIDTH/2) + BUTTON_WIDTH + INSET, INSET * 3 + 2 * BUTTON_HEIGHT + ATI, BUTTON_WIDTH, BUTTON_HEIGHT)
         
         self.config_button = QPushButton('CONFIG', self)
         self.config_button.setGeometry(int(WIDTH/2 -  BUTTON_WIDTH/2), INSET * 4 + 3 * BUTTON_HEIGHT + ATI, BUTTON_WIDTH, BUTTON_HEIGHT)
@@ -52,6 +51,16 @@ class MainWindow(QMainWindow):
         
         if fullscreen:
             self.showFullScreen()
+
+    def get_current_game(self):
+        config = ConfigParser()
+        config.read('story_config.ini')
+
+        index = 0
+        if 'selection' in config:
+            index = config['selection']['select']
+
+        return config['options'][f'op{index}']
     
     def show_play_page(self):
         self.play_page = PlayPage(self)
@@ -68,6 +77,9 @@ class MainWindow(QMainWindow):
         self.config_page = ConfigPage(self)
         self.config_page.show()
         self.hide()
+    
+    def showEvent(self, event):
+        self.current_play.setText(f'Playing {self.get_current_game()}')
 
     # def animate_change_page(self, page):
     #     page.setWindowOpacity(0.0)  # Set initial opacity to 0

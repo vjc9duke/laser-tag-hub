@@ -1,0 +1,7 @@
+WIDTH = 800
+HEIGHT = 480
+BUTTON_WIDTH = 200
+BUTTON_HEIGHT = 75
+BUTTON_FONT_SIZE = 30
+INSET = 20
+ATI = 10  # additional title inset
