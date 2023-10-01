@@ -33,9 +33,9 @@ class MainWindow(QMainWindow):
         self.story_button.setFont(QFont('Arial', BUTTON_FONT_SIZE))
         self.story_button.clicked.connect(self.show_story_page)
 
-        self.current_play = QLabel(f'Playing {self.get_current_game()}', self)
+        self.current_play = QLabel(f'Playing \n {self.get_current_game()}', self)
         self.current_play.setAlignment(Qt.AlignCenter)
-        self.current_play.setFont(QFont('Arial', int(BUTTON_FONT_SIZE * 0.8)))
+        self.current_play.setFont(QFont('Arial', int(BUTTON_FONT_SIZE * 0.5)))
         self.current_play.setStyleSheet("background-color: #43DDFF; color: black; border-radius: 10px;")
         self.current_play.setGeometry(int(WIDTH/2 -  BUTTON_WIDTH/2) + BUTTON_WIDTH + INSET, INSET * 3 + 2 * BUTTON_HEIGHT + ATI, BUTTON_WIDTH, BUTTON_HEIGHT)
         
