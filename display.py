@@ -244,35 +244,34 @@ class Display:
         self.derive_txwin()
 
     def xlateError(self, errCode: str) -> None:
-        match errCode:
-            case '1':
-                errStr = "AT command missing 0x0D 0x0A."
-            case '2':
-                errStr = "AT command missing 'AT'."
-            case '4':
-                errStr = "Unknown AT command."
-            case '5':
-                errStr = "Data length specified does not match the data length."
-            case '10':
-                errStr = "Transmit time exceeds limit."
-            case '12':
-                errStr = "CRC error on receive."
-            case '13':
-                errStr = "TX data exceeds 240 bytes."
-            case '14':
-                errStr = "Failed to write flash memory."
-            case '15':
-                errStr = "Unknown failure."
-            case '17':
-                errStr = "Last TX was not completed."
-            case '18':
-                errStr = "Preamble value is not allowed."
-            case '19':
-                errStr = "RX failure. Header error."
-            case '20':
-                errStr = "Invalid time in MODE 2 setting."
-            case _:
-                errStr = "Unknown error code."
+        if errCode == '1':
+            errStr = "AT command missing 0x0D 0x0A."
+        elif errCode == '2':
+            errStr = "AT command missing 'AT'."
+        elif errCode == '4':
+            errStr = "Unknown AT command."
+        elif errCode == '5':
+            errStr = "Data length specified does not match the data length."
+        elif errCode == '10':
+            errStr = "Transmit time exceeds limit."
+        elif errCode == '12':
+            errStr = "CRC error on receive."
+        elif errCode == '13':
+            errStr = "TX data exceeds 240 bytes."
+        elif errCode == '14':
+            errStr = "Failed to write flash memory."
+        elif errCode == '15':
+            errStr = "Unknown failure."
+        elif errCode == '17':
+            errStr = "Last TX was not completed."
+        elif errCode == '18':
+            errStr = "Preamble value is not allowed."
+        elif errCode == '19':
+            errStr = "RX failure. Header error."
+        elif errCode == '20':
+            errStr = "Invalid time in MODE 2 setting."
+        else:
+            errStr = "Unknown error code."
         errString = "ERR={}: {}".format(errCode, errStr)
         self.rxaddnstr(errString, len(errString), fg_bg=self.RED_BLACK)
         

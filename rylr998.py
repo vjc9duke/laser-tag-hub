@@ -154,35 +154,34 @@ class rylr998:
     # -- change the state table or start over
     def change_state_table(self, data):
         self.state += 1 # advance the state index
-        match data:
-            case b'A':
-                self.state_table = self.ADDR_table
-            case b'B':
-                self.state_table = self.BAND_table
-            case b'C':
-                self.state_table = self.CRFOP_table
-            case b'E':
-                self.state_table = self.ERR_table
-            case b'F': # factory
-                self.state_table = self.FACT_table
-            case b'I':
-                self.state_table = self.IPR_table
-            case b'M':
-                self.state_table = self.MODE_table
-            case b'N':
-                self.state_table = self.NETID_table # like a net group
-            case b'O':
-                self.state_table = self.OK_table 
-            case b'P':
-                self.state_table = self.PARAM_table
-            case b'R':
-                self.state_table = self.RCV_table  # impossibe! 
-            case b'U':
-                self.state_table = self.UID_table
-            case b'V':
-                self.state_table = self.VER_table
-            case _:
-                self.rxbufReset() # beats me start over
+        if data == b'A':
+            self.state_table = self.ADDR_table
+        elif data == b'B':
+            self.state_table = self.BAND_table
+        elif data == b'C':
+            self.state_table = self.CRFOP_table
+        elif data == b'E':
+            self.state_table = self.ERR_table
+        elif data == b'F': # factory
+            self.state_table = self.FACT_table
+        elif data == b'I':
+            self.state_table = self.IPR_table
+        elif data == b'M':
+            self.state_table = self.MODE_table
+        elif data == b'N':
+            self.state_table = self.NETID_table # like a net group
+        elif data == b'O':
+            self.state_table = self.OK_table 
+        elif data == b'P':
+            self.state_table = self.PARAM_table
+        elif data == b'R':
+            self.state_table = self.RCV_table  # impossibe! 
+        elif data == b'U':
+            self.state_table = self.UID_table
+        elif data == b'V':
+            self.state_table = self.VER_table
+        else:
+            self.rxbufReset() # beats me start over
 
     def gpiosetup(self) -> None:
         if existGPIO:
@@ -420,115 +419,114 @@ class rylr998:
                         self.rxbuf = self.rxbuf[:-2]
                         self.rxlen -= 2
 
-                        match self.state_table:
-                            case self.ADDR_table:
-                                dsply.rxaddnstr("addr: " + self.rxbuf, self.rxlen+6)
-                                self.addr = self.rxbuf
-                                waitForReply = False
+                        if self.state_table == self.ADDR_table:
+                            dsply.rxaddnstr("addr: " + self.rxbuf, self.rxlen+6)
+                            self.addr = self.rxbuf
+                            waitForReply = False
 
-                            case self.BAND_table:
-                                dsply.rxaddnstr("frequency: " + self.rxbuf +" Hz", self.rxlen+14) 
-                                self.band = self.rxbuf
-                                dsply.stwin.addnstr(dsply.VFO_ROW, dsply.VFO_COL+4,self.band, 
-                                              self.rxlen, cur.color_pair(dsply.WHITE_BLACK))
-                                dsply.stwin.noutrefresh()
-                                waitForReply = False
+                        elif self.state_table == self.BAND_table:
+                            dsply.rxaddnstr("frequency: " + self.rxbuf +" Hz", self.rxlen+14) 
+                            self.band = self.rxbuf
+                            dsply.stwin.addnstr(dsply.VFO_ROW, dsply.VFO_COL+4,self.band, 
+                                          self.rxlen, cur.color_pair(dsply.WHITE_BLACK))
+                            dsply.stwin.noutrefresh()
+                            waitForReply = False
 
-                            case self.CRFOP_table:
-                                dsply.rxaddnstr("power output: {} dBm".format(self.rxbuf), self.rxlen+14)       
-                                self.pwr = self.rxbuf
-                                dsply.stwin.addnstr(dsply.PWR_ROW, dsply.PWR_COL+4,self.pwr, 
-                                              self.rxlen, cur.color_pair(dsply.WHITE_BLACK))
-                                dsply.stwin.noutrefresh()
-                                waitForReply = False
+                        elif self.state_table == self.CRFOP_table:
+                            dsply.rxaddnstr("power output: {} dBm".format(self.rxbuf), self.rxlen+14)       
+                            self.pwr = self.rxbuf
+                            dsply.stwin.addnstr(dsply.PWR_ROW, dsply.PWR_COL+4,self.pwr, 
+                                          self.rxlen, cur.color_pair(dsply.WHITE_BLACK))
+                            dsply.stwin.noutrefresh()
+                            waitForReply = False
 
-                            case self.ERR_table:
-                                dsply.xlateError(self.rxbuf)
-                                waitForReply = False
-                                  
-                            case self.FACT_table:
-                                dsply.rxaddnstr("Factory defaults", 16)
-                                waitForReply = False
+                        elif self.state_table == self.ERR_table:
+                            dsply.xlateError(self.rxbuf)
+                            waitForReply = False
+                              
+                        elif self.state_table == self.FACT_table:
+                            dsply.rxaddnstr("Factory defaults", 16)
+                            waitForReply = False
 
-                            case self.IPR_table:
-                                dsply.rxaddnstr("uart: " + self.rxbuf + " baud", self.rxlen+11)
-                                self.baudrate = self.rxbuf
-                                waitForReply = False
+                        elif self.state_table == self.IPR_table:
+                            dsply.rxaddnstr("uart: " + self.rxbuf + " baud", self.rxlen+11)
+                            self.baudrate = self.rxbuf
+                            waitForReply = False
 
-                            case self.MODE_table:
-                                dsply.rxaddnstr("mode: " + self.rxbuf, self.rxlen+6)
-                                self.mode = self.rxbuf
-                                waitForReply = False
+                        elif self.state_table == self.MODE_table:
+                            dsply.rxaddnstr("mode: " + self.rxbuf, self.rxlen+6)
+                            self.mode = self.rxbuf
+                            waitForReply = False
 
-                            case self.OK_table:
-                                if txflag:
-                                    # turn the transmit indicator off
-                                    dsply.stwin.addnstr(0,dsply.TXRX_COL, dsply.TXRX_LBL, dsply.TXRX_LEN, 
-                                                  cur.color_pair(dsply.WHITE_BLACK))
-                                    dsply.stwin.noutrefresh() # yes, that was it
-                                    txflag = False # will be reset below
-                                else:
-                                    dsply.rxaddnstr("+OK", 3)
-                                waitForReply = False
-
-                            case self.NETID_table:
-                                dsply.rxaddnstr("NETWORK ID: " + self.rxbuf, self.rxlen+12) 
-                                self.netid = self.rxbuf
-                                dsply.stwin.addnstr(dsply.NETID_ROW, 37,self.netid, 
-                                              self.rxlen, cur.color_pair(dsply.WHITE_BLACK))
-                                dsply.stwin.noutrefresh()
-                                waitForReply = False
-                                
-                            case self.PARAM_table:
-                                self.spreading_factor, self.bandwidth, self.coding_rate, self.preamble = self.rxbuf.split(',', 3)
-                                dsply.rxaddnstr("spreading factor: {}".format(self.spreading_factor), len(self.spreading_factor)+18) 
-                                dsply.rxaddnstr("bandwidth: {}".format(self.bandwidth), len(self.bandwidth)+11)  
-                                dsply.rxaddnstr("coding rate: {}".format(self.coding_rate), len(self.coding_rate)+13)  
-                                dsply.rxaddnstr("preamble: {}".format(self.preamble), len(self.preamble)+10)
-                                waitForReply = False
-
-                            case self.RCV_table:
-                                # The following five lines are adapted from
-                                # https://github.com/wybiral/micropython-rylr/blob/master/rylr.py
-                                
-                                addr, n, self.rxbuf = self.rxbuf.split(',', 2)
-                                n = int(n)
-                                msg = self.rxbuf[:n]
-                                self.rxbuf = self.rxbuf[n+1:]
-                                rssi, snr = self.rxbuf.split(',')
-
-                                if n == 40:
-                                    # prevent auto scrolling if EOL at the
-                                    # end of the window
-                                    dsply.rxinsnstr(msg, n, fg_bg = dsply.BLACK_PINK)
-                                else:
-                                    # take advantage of auto scroll if n > 40.
-                                    dsply.rxaddnstr(msg, n, fg_bg = dsply.BLACK_PINK) 
-
+                        elif self.state_table == self.OK_table:
+                            if txflag:
+                                # turn the transmit indicator off
                                 dsply.stwin.addnstr(0,dsply.TXRX_COL, dsply.TXRX_LBL, dsply.TXRX_LEN, 
                                               cur.color_pair(dsply.WHITE_BLACK))
+                                dsply.stwin.noutrefresh() # yes, that was it
+                                txflag = False # will be reset below
+                            else:
+                                dsply.rxaddnstr("+OK", 3)
+                            waitForReply = False
 
-                                # add the ADDRESS, RSSI and SNR to the status window
-                                dsply.stwin.addstr(0, 13, addr, cur.color_pair(dsply.BLUE_BLACK))
-                                dsply.stwin.addstr(0, 26, rssi, cur.color_pair(dsply.BLUE_BLACK))
-                                dsply.stwin.addstr(0, 36, snr, cur.color_pair(dsply.BLUE_BLACK))
-                                dsply.stwin.noutrefresh()
-                                # not waiting for a reply from the module
-                                # so we do not reset the waitForReply flag
+                        elif self.state_table == self.NETID_table:
+                            dsply.rxaddnstr("NETWORK ID: " + self.rxbuf, self.rxlen+12) 
+                            self.netid = self.rxbuf
+                            dsply.stwin.addnstr(dsply.NETID_ROW, 37,self.netid, 
+                                          self.rxlen, cur.color_pair(dsply.WHITE_BLACK))
+                            dsply.stwin.noutrefresh()
+                            waitForReply = False
+                            
+                        elif self.state_table == self.PARAM_table:
+                            self.spreading_factor, self.bandwidth, self.coding_rate, self.preamble = self.rxbuf.split(',', 3)
+                            dsply.rxaddnstr("spreading factor: {}".format(self.spreading_factor), len(self.spreading_factor)+18) 
+                            dsply.rxaddnstr("bandwidth: {}".format(self.bandwidth), len(self.bandwidth)+11)  
+                            dsply.rxaddnstr("coding rate: {}".format(self.coding_rate), len(self.coding_rate)+13)  
+                            dsply.rxaddnstr("preamble: {}".format(self.preamble), len(self.preamble)+10)
+                            waitForReply = False
 
-                            case self.UID_table:
-                                dsply.rxaddnstr("UID: " + self.rxbuf, self.rxlen+5) 
-                                self.uid = self.rxbuf
-                                waitForReply = False
+                        elif self.state_table == self.RCV_table:
+                            # The following five lines are adapted from
+                            # https://github.com/wybiral/micropython-rylr/blob/master/rylr.py
+                            
+                            addr, n, self.rxbuf = self.rxbuf.split(',', 2)
+                            n = int(n)
+                            msg = self.rxbuf[:n]
+                            self.rxbuf = self.rxbuf[n+1:]
+                            rssi, snr = self.rxbuf.split(',')
 
-                            case self.VER_table:
-                                dsply.rxaddnstr("VER: " + self.rxbuf, self.rxlen+5) 
-                                self.version = self.rxbuf
-                                waitForReply = False
-                                
-                            case _:
-                                dsply.rxaddnstr("ERROR. Call Tech Support!",25, fg_bg = dsply.RED_BLACK) 
-                                waitForReply = False
+                            if n == 40:
+                                # prevent auto scrolling if EOL at the
+                                # end of the window
+                                dsply.rxinsnstr(msg, n, fg_bg = dsply.BLACK_PINK)
+                            else:
+                                # take advantage of auto scroll if n > 40.
+                                dsply.rxaddnstr(msg, n, fg_bg = dsply.BLACK_PINK) 
+
+                            dsply.stwin.addnstr(0,dsply.TXRX_COL, dsply.TXRX_LBL, dsply.TXRX_LEN, 
+                                          cur.color_pair(dsply.WHITE_BLACK))
+
+                            # add the ADDRESS, RSSI and SNR to the status window
+                            dsply.stwin.addstr(0, 13, addr, cur.color_pair(dsply.BLUE_BLACK))
+                            dsply.stwin.addstr(0, 26, rssi, cur.color_pair(dsply.BLUE_BLACK))
+                            dsply.stwin.addstr(0, 36, snr, cur.color_pair(dsply.BLUE_BLACK))
+                            dsply.stwin.noutrefresh()
+                            # not waiting for a reply from the module
+                            # so we do not reset the waitForReply flag
+
+                        elif self.state_table == self.UID_table:
+                            dsply.rxaddnstr("UID: " + self.rxbuf, self.rxlen+5) 
+                            self.uid = self.rxbuf
+                            waitForReply = False
+
+                        elif self.state_table == self.VER_table:
+                            dsply.rxaddnstr("VER: " + self.rxbuf, self.rxlen+5) 
+                            self.version = self.rxbuf
+                            waitForReply = False
+                            
+                        else:
+                            dsply.rxaddnstr("ERROR. Call Tech Support!",25, fg_bg = dsply.RED_BLACK) 
+                            waitForReply = False
                          
                         # also return to the txwin
                         dsply.txwin.move(txrow, txcol)
@@ -701,7 +699,7 @@ if __name__ == "__main__":
 
     def bandcheck(n : str) -> str:
         f = int(n)
-        if f < 902250000 or f > 927750000:
+        if f < 433000000 or f > 927750000:
             logging.error("Frequency must be in range (902250000..927750000)")
             raise argparse.ArgumentTypeError("Frequency must be in range (902250000..927750000)")
         return n
