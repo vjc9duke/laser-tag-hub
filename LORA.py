@@ -71,6 +71,5 @@ async def main_func():
         print("Keyboard Interrupt. Exiting...")
     except Exception as e:
         print("Error:", str(e))
-    finally:
 
 asyncio.run(main_func())
