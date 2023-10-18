@@ -12,13 +12,16 @@ stopbits = STOPBITS_ONE
 timeout = None
 RST = 4
 
-aio = aioserial.AioSerial(
+try:
+    aio = aioserial.AioSerial(
           port = port,
           baudrate = baudrate,
           parity = parity,
           bytesize = bytesize,
           stopbits = stopbits,
           timeout = timeout)
+except Exception as e:
+	print(str(e))
 
 async def ATcmd(cmd: str = '') -> int:
     command = 'AT' + ('+' if len(cmd) > 0 else '') + cmd + '\r\n'
@@ -42,6 +45,7 @@ async def main_func():
 # lora.write(b'AT+BAND=433\r\n')
 # time.sleep(0.1)
 
+    await ATcmd('IPR=9600')
     await ATcmd('ADDRESS=1')
     await ATcmd('NETWORKID=5')
     await ATcmd('BAND=433')
