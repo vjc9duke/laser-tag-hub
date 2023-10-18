@@ -58,7 +58,7 @@ async def main_func():
                     # print("Received data:", received_data)
             if aio.in_waiting > 0:
                 data = await aio.read_async(size=1)
-                if data != b'\x00'
+                if data != b'\x00':
                     print(data)
                 # print(str(data, 'utf8'))
 
