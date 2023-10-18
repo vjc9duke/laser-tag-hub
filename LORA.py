@@ -65,7 +65,7 @@ async def main_func():
                 if data != b'\x00':
                     print(data)
                 # print(str(data, 'utf8'))
-		  ATcmd('SEND=1,1,1')
+            await ATcmd('SEND=1,1,1')
 
     except KeyboardInterrupt:
         print("Keyboard Interrupt. Exiting...")
