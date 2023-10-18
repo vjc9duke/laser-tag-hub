@@ -72,6 +72,5 @@ async def main_func():
     except Exception as e:
         print("Error:", str(e))
     finally:
-        lora.close()
 
 asyncio.run(main_func())
