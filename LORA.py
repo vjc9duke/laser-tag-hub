@@ -1,6 +1,7 @@
 import aioserial
 from serial import EIGHTBITS, PARITY_NONE,  STOPBITS_ONE
 import time
+import asyncio
 
 port = '/dev/ttyS0'
 baudrate = 9600
@@ -64,4 +65,4 @@ async def main_func():
     finally:
         lora.close()
 
-main_func()
+asyncio.run(main_func())
