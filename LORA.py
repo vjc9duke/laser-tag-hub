@@ -10,6 +10,7 @@ parity = PARITY_NONE
 bytesize = EIGHTBITS
 stopbits = STOPBITS_ONE
 timeout = None
+RST = 4
 
 aio = aioserial.AioSerial(
           port = port,
@@ -31,7 +32,7 @@ async def main_func():
 
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(True)
-    GPIO.setup(self.RST,GPIO.OUT,initial=GPIO.HIGH) # the default anyway
+    GPIO.setup(RST,GPIO.OUT,initial=GPIO.HIGH) # the default anyway
 
 # Send configuration commands to the LoRa module
 # lora.write(b'AT+ADDRESS=1\r\n')
