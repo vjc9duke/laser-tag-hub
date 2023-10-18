@@ -57,8 +57,10 @@ async def main_func():
                    #  received_data = data[3]
                     # print("Received data:", received_data)
             if aio.in_waiting > 0:
-                data = str(await aio.read_async(size=1), 'utf8')
+                data = await aio.read_async(size=1)
+                # if data != 
                 print(data)
+                # print(str(data, 'utf8'))
 
     except KeyboardInterrupt:
         print("Keyboard Interrupt. Exiting...")
