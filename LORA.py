@@ -2,7 +2,7 @@ import aioserial
 from serial import EIGHTBITS, PARITY_NONE,  STOPBITS_ONE
 import time
 import asyncio
-impo[rt RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 
 port = '/dev/ttyS0'
 baudrate = 9600
