@@ -181,7 +181,7 @@ class SerialReader(QThread):
         if cls._instance is None:
             cls._instance = super().__new__(cls)
             cls._instance.initialize()
-            self.start()
+            cls._instance.start()
         return cls._instance
 
     def initialize(self):
