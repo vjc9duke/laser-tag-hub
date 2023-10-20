@@ -3,7 +3,8 @@ from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt, QTimer, pyqtSignal, QThread
 from PyQt5.QtGui import QFont
 import time
-import serialom configparser import ConfigParser
+from configparser import ConfigParser
+import serial
 
 BUTTON_FONT_SIZE = 30
 TOTAL_TIME = 600 # 10 minutes
