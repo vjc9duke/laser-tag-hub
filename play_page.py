@@ -74,7 +74,6 @@ class PlayPage(QWidget):
         # Serial receive
         self.serial_thread = SerialReader()
         self.serial_thread.message_received.connect(self.updateLabel)
-        self.serial_thread.start()
 
         spacer_label_2 = QLabel('POINTS', self)
         spacer_label_2.setFont(QFont('Courier', PLAYER_FONT_SIZE))
@@ -171,8 +170,6 @@ class PlayPage(QWidget):
         # temp: show that send message works
         self.sendMessage('AT+SEND=1,1,1\r\n')
         self.parent.show()
-        self.serial_thread.running = False
-        self.serial_thread.serial_port.close()
         self.hide()
 
 
@@ -184,6 +181,7 @@ class SerialReader(QThread):
         if cls._instance is None:
             cls._instance = super().__new__(cls)
             cls._instance.initialize()
+            self.start()
         return cls._instance
 
     def initialize(self):
