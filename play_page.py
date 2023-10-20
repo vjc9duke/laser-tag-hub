@@ -158,6 +158,7 @@ class PlayPage(QWidget):
         # self.timer_label.repaint()
 
     def updateLabel(self, message):
+        print(f'Updating label: {self.test_score}')
         self.test_score += 1
         self.score1_label = QLabel(f'{self.test_score} 00 00', self)
 
