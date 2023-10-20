@@ -162,8 +162,14 @@ class PlayPage(QWidget):
         self.test_score += 1
         self.score1_label.setText(f'{self.test_score} 00 00')
 
+    def sendMessage(self, message):
+        message_bytes = message.encode('utf-8')
+        self.serial_thread.serial_port.write(message_bytes)
+
 
     def show_main_page(self):
+        # temp: show that send message works
+        self.sendMessage('AT+SEND=1,1,1\r\n')
         self.parent.show()
         self.hide()
 
