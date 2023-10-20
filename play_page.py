@@ -65,7 +65,7 @@ class PlayPage(QWidget):
         self.test_score = 0
 
         score_layout = QHBoxLayout()
-        self.score1_label = QLabel(f'{test_score} 00 00', self)
+        self.score1_label = QLabel(f'{self.test_score} 00 00', self)
         self.score1_label.setFont(QFont('Courier', PLAYER_FONT_SIZE))
         self.score1_label.setAlignment(Qt.AlignCenter)
         self.score1_label.setStyleSheet("background-color: #43FF78; color: black; border-radius: 10px;")
@@ -159,7 +159,7 @@ class PlayPage(QWidget):
 
     def updateLabel(self, message):
         self.test_score += 1
-        self.score1_label = QLabel(f'{test_score} 00 00', self)
+        self.score1_label = QLabel(f'{self.test_score} 00 00', self)
 
 
     def show_main_page(self):
