@@ -160,7 +160,7 @@ class PlayPage(QWidget):
     def updateLabel(self, message):
         print(f'Updating label: {self.test_score}')
         self.test_score += 1
-        self.score1_label = QLabel(f'{self.test_score} 00 00', self)
+        self.score1_label.setText(f'{self.test_score} 00 00')
 
 
     def show_main_page(self):
