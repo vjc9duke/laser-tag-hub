@@ -176,7 +176,7 @@ class PlayPage(QWidget):
 
 class SerialReader(QThread):
     _instance = None
-    response_received = pyqtSignal(str)
+    message_received = pyqtSignal(str)
     
     def __new__(cls):
         if cls._instance is None:
