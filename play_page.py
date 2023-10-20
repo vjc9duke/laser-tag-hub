@@ -1,9 +1,9 @@
 from PyQt5.QtWidgets import QWidget, QPushButton, QLabel, QVBoxLayout, QHBoxLayout
 from PyQt5.QtGui import QFont
-from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtCore import Qt, QTimer, pyqtSignal, QThread
 from PyQt5.QtGui import QFont
 import time
-from configparser import ConfigParser
+import serialom configparser import ConfigParser
 
 BUTTON_FONT_SIZE = 30
 TOTAL_TIME = 600 # 10 minutes
@@ -61,12 +61,19 @@ class PlayPage(QWidget):
         layout.addLayout(player_layout)
 
         # Score labels
+        self.test_score = 0
+
         score_layout = QHBoxLayout()
-        score1_label = QLabel('00 00 00', self)
-        score1_label.setFont(QFont('Courier', PLAYER_FONT_SIZE))
-        score1_label.setAlignment(Qt.AlignCenter)
-        score1_label.setStyleSheet("background-color: #43FF78; color: black; border-radius: 10px;")
-        score_layout.addWidget(score1_label)
+        self.score1_label = QLabel(f'{test_score} 00 00', self)
+        self.score1_label.setFont(QFont('Courier', PLAYER_FONT_SIZE))
+        self.score1_label.setAlignment(Qt.AlignCenter)
+        self.score1_label.setStyleSheet("background-color: #43FF78; color: black; border-radius: 10px;")
+        score_layout.addWidget(self.score1_label)
+
+        # Serial receive
+        self.serial_thread = SerialReader()
+        self.serial_thread.message_received.connect(self.updateLabel)
+        self.serial_thread.start()
 
         spacer_label_2 = QLabel('POINTS', self)
         spacer_label_2.setFont(QFont('Courier', PLAYER_FONT_SIZE))
@@ -149,9 +156,24 @@ class PlayPage(QWidget):
         self.timer_label.setText(timer_text)
         # self.timer_label.repaint()
 
+    def updateLabel(self, message):
+        self.test_score += 1
+        self.score1_label = QLabel(f'{test_score} 00 00', self)
+
+
     def show_main_page(self):
         self.parent.show()
         self.hide()
 
 
-
+class SerialReader(QThread):
+    message_received = pyqtSignal(str)
+    
+    def __init__(self, port='/dev/serial0', baud_rate=9600, parent=None):
+        super().__init__(parent)
+        self.serial_port = serial.Serial(port, baud_rate)
+        
+    def run(self):
+        while True:
+            received_data = self.serial_port.readline().decode('utf-8').strip()
+            self.message_received.emit(received_data)
