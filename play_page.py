@@ -172,7 +172,7 @@ class PlayPage(QWidget):
         self.sendMessage('AT+SEND=1,1,1\r\n')
         self.parent.show()
         self.serial_thread.running = False
-        self.serial_thread.close()
+        self.serial_thread.serial_port.close()
         self.hide()
 
 
