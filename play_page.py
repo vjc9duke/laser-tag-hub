@@ -171,6 +171,8 @@ class PlayPage(QWidget):
         # temp: show that send message works
         self.sendMessage('AT+SEND=1,1,1\r\n')
         self.parent.show()
+        self.serial_thread.running = False
+        self.serial_thread.close()
         self.hide()
 
 
@@ -185,10 +187,11 @@ class SerialReader(QThread):
         return cls._instance
 
     def initialize(self):
+        self.running = True
         self.serial_port = serial.Serial('/dev/serial0', 9600)  # Default serial port and baud rate
         super(SerialReader, self).__init__()
         
     def run(self):
-        while True:
+        while self.running:
             received_data = self.serial_port.readline().decode('utf-8').strip()
             self.message_received.emit(received_data)
