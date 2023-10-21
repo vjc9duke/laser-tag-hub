@@ -181,7 +181,7 @@ class PlayPage(QWidget):
 
     def show_main_page(self):
         # temp: show that send message works
-        self.sendMessage('AT+IPR=115200\r\n')
+        # self.sendMessage('AT+IPR=115200\r\n')
         self.parent.show()
         self.hide()
 

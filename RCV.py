@@ -1,7 +1,7 @@
 import serial
 
 # Configure the serial port
-ser = serial.Serial('/dev/serial0', 9600)  # Use the appropriate serial port and baud rate
+ser = serial.Serial('/dev/serial0', 115200)  # Use the appropriate serial port and baud rate
 
 try:
     while True:
