@@ -5,6 +5,8 @@ from PyQt5.QtGui import QFont
 import time
 from configparser import ConfigParser
 import serial
+import player_variables
+from player_variables import pretty_print, get_scores, get_lives
 
 BUTTON_FONT_SIZE = 30
 TOTAL_TIME = 600 # 10 minutes
@@ -62,10 +64,8 @@ class PlayPage(QWidget):
         layout.addLayout(player_layout)
 
         # Score labels
-        self.test_score = 0
-
         score_layout = QHBoxLayout()
-        self.score1_label = QLabel(f'{self.test_score} 00 00', self)
+        self.score1_label = QLabel(pretty_print(get_scores(1)), self)
         self.score1_label.setFont(QFont('Courier', PLAYER_FONT_SIZE))
         self.score1_label.setAlignment(Qt.AlignCenter)
         self.score1_label.setStyleSheet("background-color: #43FF78; color: black; border-radius: 10px;")
@@ -81,17 +81,17 @@ class PlayPage(QWidget):
         spacer_label_2.setStyleSheet("background-color: #43FF78; color: black; border-radius: 10px;")
         score_layout.addWidget(spacer_label_2)
 
-        score2_label = QLabel('00 00 00', self)
-        score2_label.setFont(QFont('Courier', PLAYER_FONT_SIZE))
-        score2_label.setAlignment(Qt.AlignCenter)
-        score2_label.setStyleSheet("background-color: #43FF78; color: black; border-radius: 10px;")
-        score_layout.addWidget(score2_label)
+        self.score2_label = QLabel(pretty_print(get_scores(2)), self)
+        self.score2_label.setFont(QFont('Courier', PLAYER_FONT_SIZE))
+        self.score2_label.setAlignment(Qt.AlignCenter)
+        self.score2_label.setStyleSheet("background-color: #43FF78; color: black; border-radius: 10px;")
+        score_layout.addWidget(self.score2_label)
 
         layout.addLayout(score_layout)
 
         # Lives labels
         kdr_layout = QHBoxLayout()
-        kdr1_label = QLabel('05 05 05', self)
+        kdr1_label = QLabel(pretty_print(get_lives(1)), self)
         kdr1_label.setFont(QFont('Courier', PLAYER_FONT_SIZE))
         kdr1_label.setAlignment(Qt.AlignCenter)
         kdr1_label.setStyleSheet("background-color: #43FF78; color: black; border-radius: 10px;")
@@ -104,7 +104,7 @@ class PlayPage(QWidget):
         kdr_layout.addWidget(spacer_label_3)
 
 
-        kdr2_label = QLabel('05 05 05', self)
+        kdr2_label = QLabel(pretty_print(get_lives(2)), self)
         kdr2_label.setFont(QFont('Courier', PLAYER_FONT_SIZE))
         kdr2_label.setAlignment(Qt.AlignCenter)
         kdr2_label.setStyleSheet("background-color: #43FF78; color: black; border-radius: 10px;")
@@ -157,18 +157,31 @@ class PlayPage(QWidget):
         # self.timer_label.repaint()
 
     def updateLabel(self, message):
-        print(f'Updating label: {self.test_score}')
-        self.test_score += 1
-        self.score1_label.setText(f'{self.test_score} 00 00')
+        # message format for now: AT+SEND=1,1,x where x represents the person shot
+        player = self.parseMessage(message)
+        player_variables.scores[player] += 1
+        print(f'Updating score for player {player}')
+        
+        self.score1_label.setText(pretty_print(get_scores(1)))
+        self.score2_label.setText(pretty_print(get_scores(2)))
+
+    def parseMessage(self, message):
+        # message format for now: AT+SEND=1,1,x where x represents the person shot
+        parameters = message.split(',')
+        if len(parameters) >= 3:
+            return int(parameters[2])
+        else:
+            return -1
 
     def sendMessage(self, message):
+        if not self.serial_thread.running:
+            return 
         message_bytes = message.encode('utf-8')
         self.serial_thread.serial_port.write(message_bytes)
 
-
     def show_main_page(self):
         # temp: show that send message works
-        self.sendMessage('AT+SEND=1,1,1\r\n')
+        # self.sendMessage('AT+SEND=1,1,1\r\n')
         self.parent.show()
         self.hide()
 
@@ -185,8 +198,12 @@ class SerialReader(QThread):
         return cls._instance
 
     def initialize(self):
-        self.running = True
-        self.serial_port = serial.Serial('/dev/serial0', 9600)  # Default serial port and baud rate
+        try:
+            self.serial_port = serial.Serial('/dev/serial0', 115200)  # Default serial port and baud rate
+            self.running = True
+        except Exception as e: # no serial port, UI mode only
+            print("Serial not found, UI mode only")
+            self.running = False
         super(SerialReader, self).__init__()
         
     def run(self):
