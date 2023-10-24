@@ -7,6 +7,7 @@ from configparser import ConfigParser
 import serial
 import player_variables
 from player_variables import pretty_print, get_scores, get_lives
+from end_page import EndPage
 
 BUTTON_FONT_SIZE = 30
 TOTAL_TIME = 600 # 10 minutes
@@ -121,7 +122,7 @@ class PlayPage(QWidget):
         finish_button = QPushButton('Finish', self)
         finish_button.setFont(QFont('Arial', PLAYER_FONT_SIZE*2))
         finish_button.setStyleSheet("background-color: orange; color: black; border-radius: 10px;")
-        finish_button.clicked.connect(self.show_main_page)
+        finish_button.clicked.connect(self.go_to_end_page)
         finish_layout.addWidget(finish_button)
 
         finish_space_2 = QLabel(' ', self)
@@ -179,10 +180,11 @@ class PlayPage(QWidget):
         message_bytes = message.encode('utf-8')
         self.serial_thread.serial_port.write(message_bytes)
 
-    def show_main_page(self):
+    def go_to_end_page(self):
         # temp: show that send message works
         # self.sendMessage('AT+IPR=115200\r\n')
-        self.parent.show()
+        self.end_page = EndPage(self)
+        self.end_page.show()
         self.hide()
 
 
