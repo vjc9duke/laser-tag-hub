@@ -160,7 +160,7 @@ class PlayPage(QWidget):
     def updateLabel(self, message):
         # message format for now: AT+SEND=1,1,x where x represents the person shot
         player = self.parseMessage(message)
-        player_variables.scores[player] += 1
+        player_variables.scores[player-5] += 1
         print(f'Updating score for player {player}')
         
         self.score1_label.setText(pretty_print(get_scores(1)))
