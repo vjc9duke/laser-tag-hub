@@ -159,6 +159,7 @@ class PlayPage(QWidget):
 
     def updateLabel(self, message):
         # message format for now: AT+SEND=1,1,x where x represents the person shot
+        print(f'Received message: {message}')
         player = self.parseMessage(message)
         player_variables.scores[player-5] += 1
         print(f'Updating score for player {player}')
@@ -169,6 +170,7 @@ class PlayPage(QWidget):
     def parseMessage(self, message):
         # message format for now: AT+SEND=1,1,x where x represents the person shot
         parameters = message.split(',')
+        print(f'Parameters: {parameters}')
         if len(parameters) >= 3:
             return int(parameters[2])
         else:
