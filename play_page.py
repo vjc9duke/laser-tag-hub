@@ -213,4 +213,5 @@ class SerialReader(QThread):
     def run(self):
         while self.running:
             received_data = self.serial_port.readline().decode('utf-8').strip()
+            print(f'Received data: {received_data}')
             self.message_received.emit(received_data)
