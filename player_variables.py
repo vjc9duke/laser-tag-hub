@@ -1,20 +1,25 @@
 DEF_LIVES = 5
-MAX_KDR = 999
+MAX_KDR = 99
 
-num_players = 6
-teams = [1,1,1,2,2,2]  # TODO: harcoded for now, fix this
-# scores = num_players * [0]
-scores = [23, 5, 12, 100, 9, 17]
-# lives = num_players * [DEF_LIVES]
-lives = [1, 2, 3, 4, 5, 6]
+num_players = 4
+LORA_id_map = {
+    5: 1,
+    7: 2,
+    1: 3,
+    11: 4
+}
+teams = [1,1,2,2]  # TODO: harcoded for now, fix this
+scores = num_players * [0]
+# scores = [23, 5, 12, 100, 9, 17]
+lives = num_players * [DEF_LIVES]
 
 #TODO: player names
 
-def pretty_print(numbers, zfill=2, sp=1):
+def pretty_print(numbers, zfill=2, sp=5):
     return (' ' * sp).join(str(num).zfill(zfill) for num in numbers)
 
-def pretty_print_float(numbers, dp=2):
-    return ' '.join(str(round(num, dp)) for num in numbers)
+def pretty_print_float(numbers, dp=2, sp=5):
+    return (' ' * sp).join(str(round(num, dp)) for num in numbers)
 
 def get_scores(team_num):
     return [score for score, team in zip(scores, teams) if team == team_num]

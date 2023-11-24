@@ -48,7 +48,7 @@ class PlayPage(QWidget):
 
         # Player labels
         player_layout = QHBoxLayout()
-        player1_label = QLabel('P1 P4 P5', self) # todo: replace with actual players
+        player1_label = QLabel('P1         P2', self) # todo: replace with actual players
         player1_label.setFont(QFont('Arial', PLAYER_FONT_SIZE))
         player1_label.setAlignment(Qt.AlignCenter | Qt.AlignTop)
         # player1_label.setStyleSheet("background-color: green; color: white; border-radius: 10px;")
@@ -57,7 +57,7 @@ class PlayPage(QWidget):
         spacer_label = QLabel(' ', self)
         player_layout.addWidget(spacer_label)
         
-        player2_label = QLabel('P2 P3 P6', self) # todo: replace with actual players
+        player2_label = QLabel('P3          P4', self) # todo: replace with actual players
         player2_label.setFont(QFont('Arial', PLAYER_FONT_SIZE))
         player2_label.setAlignment(Qt.AlignCenter | Qt.AlignTop)
         player_layout.addWidget(player2_label)
@@ -66,7 +66,7 @@ class PlayPage(QWidget):
 
         # Score labels
         score_layout = QHBoxLayout()
-        self.score1_label = QLabel(pretty_print(get_scores(1)), self)
+        self.score1_label = QLabel(pretty_print(get_scores(1), sp=5), self)
         self.score1_label.setFont(QFont('Courier', PLAYER_FONT_SIZE))
         self.score1_label.setAlignment(Qt.AlignCenter)
         self.score1_label.setStyleSheet("background-color: #43FF78; color: black; border-radius: 10px;")
@@ -158,21 +158,25 @@ class PlayPage(QWidget):
         # self.timer_label.repaint()
 
     def updateLabel(self, message):
-        # message format for now: AT+SEND=1,1,x where x represents the person shot
+        # message format for now: +RCV=shot,1,shooter
         print(f'Received message: {message}')
-        player = self.parseMessage(message)
-        player_variables.scores[player-5] += 1
+        (shot, shooter) = self.parseMessage(message)
+        if shot not in player_variables.LORA_id_map:
+            print(f"Invalid shot: {shot}")
+            return
+        player_variables.scores[shooter] += 1
+        player_variables.lives[player_variables.LORA_id_map.get(shot)] -= 1
         print(f'Updating score for player {player}')
         
         self.score1_label.setText(pretty_print(get_scores(1)))
         self.score2_label.setText(pretty_print(get_scores(2)))
 
     def parseMessage(self, message):
-        # message format for now: AT+SEND=1,1,x where x represents the person shot
-        parameters = message.split(',')
+        # message format for now: +RCV=shot,1,shooter
+        parameters = re.findall(r'\d+', input_string)
         print(f'Parameters: {parameters}')
         if len(parameters) >= 3:
-            return int(parameters[2])
+            return (int(parameters[0]), int(parameters[2]))  # shot, shooter
         else:
             return -1
 

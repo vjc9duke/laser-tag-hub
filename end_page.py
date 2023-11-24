@@ -52,7 +52,7 @@ class EndPage(QWidget):
         self.score1_label = QLabel(str(t1_score), self)
         self.score1_label.setFont(QFont('Courier', PLAYER_FONT_SIZE))
         self.score1_label.setAlignment(Qt.AlignCenter)
-        self.score1_label.setStyleSheet(f"background-color: {win_color if t1_score > t2_score else lose_color}; color: black; border-radius: 10px;")
+        self.score1_label.setStyleSheet(f"background-color: {win_color if t1_score >= t2_score else lose_color}; color: black; border-radius: 10px;")
         score_layout.addWidget(self.score1_label)
 
         spacer_label_2 = QLabel('POINTS', self)
@@ -64,14 +64,14 @@ class EndPage(QWidget):
         self.score2_label = QLabel(str(t2_score), self) 
         self.score2_label.setFont(QFont('Courier', PLAYER_FONT_SIZE))
         self.score2_label.setAlignment(Qt.AlignCenter)
-        self.score2_label.setStyleSheet(f"background-color: {win_color if t2_score > t1_score else lose_color}; color: black; border-radius: 10px;")
+        self.score2_label.setStyleSheet(f"background-color: {win_color if t2_score >= t1_score else lose_color}; color: black; border-radius: 10px;")
         score_layout.addWidget(self.score2_label)
 
         layout.addLayout(score_layout)
 
         # Player labels
         player_layout = QHBoxLayout()
-        player1_label = QLabel('P1    P4    P5', self) # todo: replace with actual players, zfill for spacing
+        player1_label = QLabel('P1          P2', self) # todo: replace with actual players, zfill for spacing
         player1_label.setFont(QFont('Arial', PLAYER_FONT_SIZE))
         player1_label.setAlignment(Qt.AlignCenter | Qt.AlignTop)
         # player1_label.setStyleSheet("background-color: green; color: white; border-radius: 10px;")
@@ -80,7 +80,7 @@ class EndPage(QWidget):
         spacer_label = QLabel(' ', self)
         player_layout.addWidget(spacer_label)
         
-        player2_label = QLabel('P2    P3    P6', self) # todo: replace with actual players
+        player2_label = QLabel('P3          P4', self) # todo: replace with actual players
         player2_label.setFont(QFont('Arial', PLAYER_FONT_SIZE))
         player2_label.setAlignment(Qt.AlignCenter | Qt.AlignTop)
         player_layout.addWidget(player2_label)
@@ -112,7 +112,7 @@ class EndPage(QWidget):
 
         # Points label
         points_layout = QHBoxLayout()
-        points1_label = QLabel(pretty_print(get_scores(1), sp=2), self)
+        points1_label = QLabel(pretty_print(get_scores(1)), self)
         points1_label.setFont(QFont('Courier', PLAYER_FONT_SIZE))
         points1_label.setAlignment(Qt.AlignCenter)
         points1_label.setStyleSheet("background-color: #B9B8A9; color: black; border-radius: 10px;")
@@ -125,7 +125,7 @@ class EndPage(QWidget):
         points_layout.addWidget(spacer_label_4)
 
 
-        points2_label = QLabel(pretty_print(get_scores(2), sp=2), self)
+        points2_label = QLabel(pretty_print(get_scores(2)), self)
         points2_label.setFont(QFont('Courier', PLAYER_FONT_SIZE))
         points2_label.setAlignment(Qt.AlignCenter)
         points2_label.setStyleSheet("background-color: #B9B8A9; color: black; border-radius: 10px;")
