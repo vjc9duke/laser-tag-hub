@@ -7,6 +7,7 @@ from story_page import StoryPage
 from config_page import ConfigPage
 from configparser import ConfigParser
 from constants import *
+from story_game import KeypadApp
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -63,9 +64,13 @@ class MainWindow(QMainWindow):
         return config['options'][f'op{index}']
     
     def show_play_page(self):
-        self.play_page = PlayPage(self)
-        # self.animate_change_page(self.play_page)
-        self.play_page.show()
+        if(self.get_current_game() == 'Normal'):
+            self.play_page = PlayPage(self)
+            # self.animate_change_page(self.play_page)
+            self.play_page.show()
+        else:
+            self.story_game = KeypadApp(self)
+            self.story_game.show()
         self.hide()
     
     def show_story_page(self):

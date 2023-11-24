@@ -153,6 +153,8 @@ class PlayPage(QWidget):
             timer_text = '{:02}:{:02}'.format(minutes, seconds)
         else:
             timer_text = '00:00'  # Timer expired
+            self.timer.stop()
+            self.go_to_end_page()
         
         self.timer_label.setText(timer_text)
         # self.timer_label.repaint()

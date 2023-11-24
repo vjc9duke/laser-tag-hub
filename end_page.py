@@ -13,7 +13,7 @@ TOTAL_TIME = 600 # 10 minutes
 PLAYER_FONT_SIZE = 20
 
 class EndPage(QWidget):
-    def __init__(self, parent):
+    def __init__(self, parent, win_override=-1):
         super().__init__()
         self.parent = parent
         self.setWindowTitle('End Page')
@@ -52,7 +52,7 @@ class EndPage(QWidget):
         self.score1_label = QLabel(str(t1_score), self)
         self.score1_label.setFont(QFont('Courier', PLAYER_FONT_SIZE))
         self.score1_label.setAlignment(Qt.AlignCenter)
-        self.score1_label.setStyleSheet(f"background-color: {win_color if t1_score >= t2_score else lose_color}; color: black; border-radius: 10px;")
+        self.score1_label.setStyleSheet(f"background-color: {win_color if (win_override == -1 and t1_score >= t2_score) or win_override == 0 else lose_color}; color: black; border-radius: 10px;")
         score_layout.addWidget(self.score1_label)
 
         spacer_label_2 = QLabel('POINTS', self)
@@ -64,7 +64,7 @@ class EndPage(QWidget):
         self.score2_label = QLabel(str(t2_score), self) 
         self.score2_label.setFont(QFont('Courier', PLAYER_FONT_SIZE))
         self.score2_label.setAlignment(Qt.AlignCenter)
-        self.score2_label.setStyleSheet(f"background-color: {win_color if t2_score >= t1_score else lose_color}; color: black; border-radius: 10px;")
+        self.score2_label.setStyleSheet(f"background-color: {win_color if (win_override == -1 and t2_score >= t1_score) or win_override == 1 else lose_color}; color: black; border-radius: 10px;")
         score_layout.addWidget(self.score2_label)
 
         layout.addLayout(score_layout)
