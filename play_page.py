@@ -97,7 +97,7 @@ class PlayPage(QWidget):
         self.kdr1_label.setFont(QFont('Courier', PLAYER_FONT_SIZE))
         self.kdr1_label.setAlignment(Qt.AlignCenter)
         self.kdr1_label.setStyleSheet("background-color: #43FF78; color: black; border-radius: 10px;")
-        kdr_layout.addWidget(kdr1_label)
+        kdr_layout.addWidget(self.kdr1_label)
 
         spacer_label_3 = QLabel('LIVES', self)
         spacer_label_3.setFont(QFont('Courier', PLAYER_FONT_SIZE))
@@ -110,7 +110,7 @@ class PlayPage(QWidget):
         self.kdr2_label.setFont(QFont('Courier', PLAYER_FONT_SIZE))
         self.kdr2_label.setAlignment(Qt.AlignCenter)
         self.kdr2_label.setStyleSheet("background-color: #43FF78; color: black; border-radius: 10px;")
-        kdr_layout.addWidget(kdr2_label)
+        kdr_layout.addWidget(self.kdr2_label)
 
         layout.addLayout(kdr_layout)
 
