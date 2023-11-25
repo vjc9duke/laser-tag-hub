@@ -176,7 +176,7 @@ class PlayPage(QWidget):
 
     def parseMessage(self, message):
         # message format for now: +RCV=shot,1,shooter
-        parameters = re.findall(r'\d+', input_string)
+        parameters = re.findall(r'\d+', message)
         print(f'Parameters: {parameters}')
         if len(parameters) >= 3:
             return (int(parameters[0]), int(parameters[2]))  # shot, shooter
