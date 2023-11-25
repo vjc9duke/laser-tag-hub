@@ -93,10 +93,10 @@ class PlayPage(QWidget):
 
         # Lives labels
         kdr_layout = QHBoxLayout()
-        kdr1_label = QLabel(pretty_print(get_lives(1)), self)
-        kdr1_label.setFont(QFont('Courier', PLAYER_FONT_SIZE))
-        kdr1_label.setAlignment(Qt.AlignCenter)
-        kdr1_label.setStyleSheet("background-color: #43FF78; color: black; border-radius: 10px;")
+        self.kdr1_label = QLabel(pretty_print(get_lives(1)), self)
+        self.kdr1_label.setFont(QFont('Courier', PLAYER_FONT_SIZE))
+        self.kdr1_label.setAlignment(Qt.AlignCenter)
+        self.kdr1_label.setStyleSheet("background-color: #43FF78; color: black; border-radius: 10px;")
         kdr_layout.addWidget(kdr1_label)
 
         spacer_label_3 = QLabel('LIVES', self)
@@ -106,10 +106,10 @@ class PlayPage(QWidget):
         kdr_layout.addWidget(spacer_label_3)
 
 
-        kdr2_label = QLabel(pretty_print(get_lives(2)), self)
-        kdr2_label.setFont(QFont('Courier', PLAYER_FONT_SIZE))
-        kdr2_label.setAlignment(Qt.AlignCenter)
-        kdr2_label.setStyleSheet("background-color: #43FF78; color: black; border-radius: 10px;")
+        self.kdr2_label = QLabel(pretty_print(get_lives(2)), self)
+        self.kdr2_label.setFont(QFont('Courier', PLAYER_FONT_SIZE))
+        self.kdr2_label.setAlignment(Qt.AlignCenter)
+        self.kdr2_label.setStyleSheet("background-color: #43FF78; color: black; border-radius: 10px;")
         kdr_layout.addWidget(kdr2_label)
 
         layout.addLayout(kdr_layout)
@@ -174,6 +174,9 @@ class PlayPage(QWidget):
         
         self.score1_label.setText(pretty_print(get_scores(1)))
         self.score2_label.setText(pretty_print(get_scores(2)))
+
+        self.kdr1_label.setText(pretty_print(get_lives(1)))
+        self.kdr2_label.setText(pretty_print(get_lives(2)))
 
     def parseMessage(self, message):
         # message format for now: +RCV=shot,1,shooter
