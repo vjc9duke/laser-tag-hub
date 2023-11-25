@@ -39,7 +39,7 @@ def get_kdr(team_num):
         lives_lost = DEF_LIVES - life
         if score == 0:
             kdr.append(0)
-        else if lives_lost <= 0:
+        elif lives_lost <= 0:
             kdr.append(MAX_KDR)
         else:
             kdr.append(score / lives_lost)
