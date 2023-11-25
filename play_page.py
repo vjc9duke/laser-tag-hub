@@ -164,11 +164,12 @@ class PlayPage(QWidget):
         # message format for now: +RCV=shot,1,shooter
         print(f'Received message: {message}')
         (shot, shooter) = self.parseMessage(message)
+        print(f'Shooter: {shooter}, shot: {shot}')
         if shot not in player_variables.LORA_id_map:
             print(f"Invalid shot: {shot}")
             return
-        player_variables.scores[shooter] += 1
-        player_variables.lives[player_variables.LORA_id_map.get(shot)] -= 1
+        player_variables.scores[shooter-1] += 1
+        player_variables.lives[player_variables.LORA_id_map.get(shot)-1] -= 1
         print(f'Updating score for shooter {shooter}')
         print(f'Updating lives for shooter {player_variables.LORA_id_map.get(shot)}')
         

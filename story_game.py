@@ -136,8 +136,8 @@ class KeypadApp(QWidget):
         if shot not in player_variables.LORA_id_map:
             print(f"Invalid shot: {shot}")
             return
-        player_variables.scores[shooter] += 1
-        player_variables.lives[player_variables.LORA_id_map.get(shot)] -= 1
+        player_variables.scores[shooter-1] += 1
+        player_variables.lives[player_variables.LORA_id_map.get(shot)-1] -= 1
         print(f'Updating score for shooter {shooter}')
         print(f'Updating lives for shooter {player_variables.LORA_id_map.get(shot)}')
     
