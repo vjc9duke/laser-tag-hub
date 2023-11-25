@@ -45,3 +45,8 @@ def get_kdr(team_num):
             kdr.append(score / lives_lost)
 
     return kdr
+
+def reset():
+    global scores, lives
+    scores = num_players * [0]
+    lives = num_players * [DEF_LIVES]

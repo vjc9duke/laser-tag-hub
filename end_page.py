@@ -160,5 +160,6 @@ class EndPage(QWidget):
             self.showFullScreen()
 
     def show_main_page(self):
+        player_variables.reset()
         self.parent.parent.show()
         self.hide()
