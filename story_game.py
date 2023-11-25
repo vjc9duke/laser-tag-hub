@@ -7,6 +7,8 @@ from end_page import EndPage
 from play_page import SerialReader
 from configparser import ConfigParser
 import re
+import player_variables
+import serial
 from player_variables import pretty_print, get_scores, get_lives
 import re
 
