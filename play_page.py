@@ -8,6 +8,7 @@ import serial
 import player_variables
 from player_variables import pretty_print, get_scores, get_lives
 from end_page import EndPage
+import re
 
 BUTTON_FONT_SIZE = 30
 TOTAL_TIME = 600 # 10 minutes
