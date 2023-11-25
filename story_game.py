@@ -62,6 +62,13 @@ class KeypadApp(QWidget):
         self.serial_thread = SerialReader()
         self.serial_thread.message_received.connect(self.updateLabel)
 
+        config = ConfigParser()
+        config.read('config.ini')
+        fullscreen = config.getboolean('General', 'fullscreen')
+        
+        if fullscreen:
+            self.showFullScreen()
+
     def apply_button_style(self, button, color="4356FF"):
         button.setFont(QFont('Arial', BUTTON_FONT_SIZE))
         button.setStyleSheet(f"background-color: #{color}; color: white; border-radius: 10px;")
