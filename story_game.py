@@ -128,6 +128,7 @@ class KeypadApp(QWidget):
         # temp: show that send message works
         # self.sendMessage('AT+IPR=115200\r\n')
         self.end_page = EndPage(self, won)
+        self.timer.stop()
         self.end_page.show()
         self.hide()
 

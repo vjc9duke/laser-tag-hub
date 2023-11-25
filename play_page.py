@@ -197,6 +197,7 @@ class PlayPage(QWidget):
     def go_to_end_page(self):
         # temp: show that send message works
         # self.sendMessage('AT+IPR=115200\r\n')
+        self.timer.stop()
         self.end_page = EndPage(self)
         self.end_page.show()
         self.hide()
