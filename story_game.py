@@ -5,6 +5,7 @@ from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLineEdit, QLabel
 from end_page import EndPage
 from play_page import SerialReader
+from configparser import ConfigParser
 
 BUTTON_FONT_SIZE = 30
 TOTAL_TIME = 90
