@@ -169,7 +169,8 @@ class PlayPage(QWidget):
             return
         player_variables.scores[shooter] += 1
         player_variables.lives[player_variables.LORA_id_map.get(shot)] -= 1
-        print(f'Updating score for player {player}')
+        print(f'Updating score for shooter {shooter}')
+        print(f'Updating lives for shooter {player_variables.LORA_id_map.get(shot)}')
         
         self.score1_label.setText(pretty_print(get_scores(1)))
         self.score2_label.setText(pretty_print(get_scores(2)))
