@@ -7,6 +7,8 @@ from end_page import EndPage
 from play_page import SerialReader
 from configparser import ConfigParser
 import re
+from player_variables import pretty_print, get_scores, get_lives
+import re
 
 BUTTON_FONT_SIZE = 30
 TOTAL_TIME = 90
