@@ -3,7 +3,7 @@ MAX_KDR = 99
 
 num_players = 4
 LORA_id_map = {
-    5: 1,
+    8: 1,
     7: 2,
     1: 3,
     11: 4
