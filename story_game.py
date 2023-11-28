@@ -14,6 +14,9 @@ import re
 
 BUTTON_FONT_SIZE = 30
 TOTAL_TIME = 90
+CODE = [7,4,2,0,9]
+DIGITS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "*", "0"]
+CODE_STR = "8531*"
 
 class KeypadApp(QWidget):
     def __init__(self, parent):
@@ -22,6 +25,8 @@ class KeypadApp(QWidget):
         self.parent = parent
         self.setGeometry(0, 0, 800, 480)
         self.setStyleSheet("background-color: black; color: white;")
+        self.keypad_buttons = []
+        self.current_index = 0
 
         self.init_ui()
 
@@ -49,6 +54,8 @@ class KeypadApp(QWidget):
         keypad_layout.addWidget(self.create_keypad_row('456'))
         keypad_layout.addWidget(self.create_keypad_row('789'))
         keypad_layout.addWidget(self.create_keypad_row('*0<'))
+
+        self.apply_button_style(self.keypad_buttons[CODE[self.current_index]], color="43FF78")
 
         # Main layout
         main_layout = QVBoxLayout()
@@ -92,24 +99,47 @@ class KeypadApp(QWidget):
             else:
                 button.clicked.connect(lambda _, text=button_text: self.on_digit_clicked(text))
                 self.apply_button_style(button)
+                self.keypad_buttons.append(button)
             layout.addWidget(button)
-
         return widget
 
+    def code_substring_match(self, text):
+        return CODE_STR.startswith(text)
+    
     def on_digit_clicked(self, digit):
+
         current_text = self.top_input_box.text()
         new_text = current_text + digit
+
+        for button in self.keypad_buttons:
+            self.apply_button_style(button)
 
         if len(new_text) <= 5:
             self.top_input_box.setText(new_text)
 
-        if len(new_text) == 5 and new_text == '1234*':
+        if len(new_text) == 5 and new_text == CODE_STR:
             self.go_to_end_page(0)  # Replace with your function call
+            return
+        
+        if self.code_substring_match(new_text):
+            self.apply_button_style(self.keypad_buttons[CODE[len(current_text)+1]], color="43FF78")
+            
+        # if DIGITS.index(digit) == CODE[self.current_index] and self.current_index < len(CODE) - 1 and self.code_substring_match():
+        #     self.apply_button_style(self.keypad_buttons[CODE[self.current_index]])
+        #     self.current_index += 1
+        #     self.apply_button_style(self.keypad_buttons[CODE[self.current_index]], color="43FF78")
+        # else:
+        #     self.apply_button_style(self.keypad_buttons[CODE[self.current_index]])
 
     def on_backspace_clicked(self):
         current_text = self.top_input_box.text()
         new_text = current_text[:-1]
         self.top_input_box.setText(new_text)
+
+        for button in self.keypad_buttons:
+            self.apply_button_style(button)
+        if self.code_substring_match(new_text):
+            self.apply_button_style(self.keypad_buttons[CODE[len(new_text)]], color="43FF78")
 
     def update_timer(self):
         time_left = int(TOTAL_TIME - (time.time() - self.start_time))
