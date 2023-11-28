@@ -10,7 +10,7 @@ LORA_id_map = {
 }
 teams = [1,1,2,2]  # TODO: harcoded for now, fix this
 scores = num_players * [0]
-# scores = [23, 5, 12, 100, 9, 17]
+# scores = [2,1,0,5]
 lives = num_players * [DEF_LIVES]
 
 #TODO: player names

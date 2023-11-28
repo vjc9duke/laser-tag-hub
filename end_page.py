@@ -45,17 +45,17 @@ class EndPage(QWidget):
         # Score labels
         t1_score = get_total_score(1)
         t2_score = get_total_score(2)
-        win_color = '#43FF78' 
-        lose_color = '#FF4343'
+        self.win_color = '#43FF78' 
+        self.lose_color = '#FF4343'
 
         score_layout = QHBoxLayout()
         self.score1_label = QLabel(str(t1_score), self)
         self.score1_label.setFont(QFont('Courier', PLAYER_FONT_SIZE))
         self.score1_label.setAlignment(Qt.AlignCenter)
-        self.score1_label.setStyleSheet(f"background-color: {win_color if (win_override == -1 and t1_score >= t2_score) or win_override == 0 else lose_color}; color: black; border-radius: 10px;")
+        self.score1_label.setStyleSheet(f"background-color: {self.calculateColor(1, win_override)}; color: black; border-radius: 10px;")
         score_layout.addWidget(self.score1_label)
 
-        spacer_label_2 = QLabel('POINTS', self)
+        spacer_label_2 = QLabel('TEAM POINTS', self)
         spacer_label_2.setFont(QFont('Courier', PLAYER_FONT_SIZE))
         spacer_label_2.setAlignment(Qt.AlignCenter)
         spacer_label_2.setStyleSheet("background-color: #B9B8A9; color: black; border-radius: 10px;")
@@ -64,7 +64,7 @@ class EndPage(QWidget):
         self.score2_label = QLabel(str(t2_score), self) 
         self.score2_label.setFont(QFont('Courier', PLAYER_FONT_SIZE))
         self.score2_label.setAlignment(Qt.AlignCenter)
-        self.score2_label.setStyleSheet(f"background-color: {win_color if (win_override == -1 and t2_score >= t1_score) or win_override == 1 else lose_color}; color: black; border-radius: 10px;")
+        self.score2_label.setStyleSheet(f"background-color: {self.calculateColor(2, win_override)}; color: black; border-radius: 10px;")
         score_layout.addWidget(self.score2_label)
 
         layout.addLayout(score_layout)
@@ -75,6 +75,7 @@ class EndPage(QWidget):
         player1_label.setFont(QFont('Arial', PLAYER_FONT_SIZE))
         player1_label.setAlignment(Qt.AlignCenter | Qt.AlignTop)
         # player1_label.setStyleSheet("background-color: green; color: white; border-radius: 10px;")
+        player1_label.setStyleSheet(f"background-color: {self.calculateColor(1, win_override)}; color: black; border-radius: 10px;")
         player_layout.addWidget(player1_label)
 
         spacer_label = QLabel(' ', self)
@@ -83,6 +84,7 @@ class EndPage(QWidget):
         player2_label = QLabel('P3          P4', self) # todo: replace with actual players
         player2_label.setFont(QFont('Arial', PLAYER_FONT_SIZE))
         player2_label.setAlignment(Qt.AlignCenter | Qt.AlignTop)
+        player2_label.setStyleSheet(f"background-color: {self.calculateColor(2, win_override)}; color: black; border-radius: 10px;")
         player_layout.addWidget(player2_label)
         
         layout.addLayout(player_layout)
@@ -92,7 +94,7 @@ class EndPage(QWidget):
         kdr1_label = QLabel(pretty_print_float(get_kdr(1), dp=2), self)
         kdr1_label.setFont(QFont('Courier', PLAYER_FONT_SIZE))
         kdr1_label.setAlignment(Qt.AlignCenter)
-        kdr1_label.setStyleSheet("background-color: #B9B8A9; color: black; border-radius: 10px;")
+        kdr1_label.setStyleSheet(f"background-color: {self.calculateColor(1, win_override)}; color: black; border-radius: 10px;")
         kdr_layout.addWidget(kdr1_label)
 
         spacer_label_3 = QLabel('KDR', self)
@@ -105,7 +107,7 @@ class EndPage(QWidget):
         kdr2_label = QLabel(pretty_print_float(get_kdr(2), dp=2), self)  # TODO: look into pretty print with decimals
         kdr2_label.setFont(QFont('Courier', PLAYER_FONT_SIZE))
         kdr2_label.setAlignment(Qt.AlignCenter)
-        kdr2_label.setStyleSheet("background-color: #B9B8A9; color: black; border-radius: 10px;")
+        kdr2_label.setStyleSheet(f"background-color: {self.calculateColor(2, win_override)}; color: black; border-radius: 10px;")
         kdr_layout.addWidget(kdr2_label)
 
         layout.addLayout(kdr_layout)
@@ -115,7 +117,7 @@ class EndPage(QWidget):
         points1_label = QLabel(pretty_print(get_scores(1)), self)
         points1_label.setFont(QFont('Courier', PLAYER_FONT_SIZE))
         points1_label.setAlignment(Qt.AlignCenter)
-        points1_label.setStyleSheet("background-color: #B9B8A9; color: black; border-radius: 10px;")
+        points1_label.setStyleSheet(f"background-color: {self.calculateColor(1, win_override)}; color: black; border-radius: 10px;")
         points_layout.addWidget(points1_label)
 
         spacer_label_4 = QLabel('POINTS', self)
@@ -128,7 +130,7 @@ class EndPage(QWidget):
         points2_label = QLabel(pretty_print(get_scores(2)), self)
         points2_label.setFont(QFont('Courier', PLAYER_FONT_SIZE))
         points2_label.setAlignment(Qt.AlignCenter)
-        points2_label.setStyleSheet("background-color: #B9B8A9; color: black; border-radius: 10px;")
+        points2_label.setStyleSheet(f"background-color: {self.calculateColor(2, win_override)}; color: black; border-radius: 10px;")
         points_layout.addWidget(points2_label)
 
         layout.addLayout(points_layout)
@@ -158,6 +160,11 @@ class EndPage(QWidget):
         
         if fullscreen:
             self.showFullScreen()
+
+    def calculateColor(self, team, win_override):
+        if(team == 2):
+            return self.win_color if (win_override == -1 and get_total_score(2) >= get_total_score(1)) or win_override == 1 else self.lose_color
+        return self.win_color if (win_override == -1 and get_total_score(1) >= get_total_score(2)) or win_override == 0 else self.lose_color
 
     def show_main_page(self):
         player_variables.reset()
