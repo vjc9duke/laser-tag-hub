@@ -186,7 +186,7 @@ class PlayPage(QWidget):
         if len(parameters) >= 3:
             return (int(parameters[0]), int(parameters[2]))  # shot, shooter
         else:
-            return -1
+            return (-1, -1);
 
     def sendMessage(self, message):
         if not self.serial_thread.running:
